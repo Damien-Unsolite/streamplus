@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div id="root">
+
+    <!-- Top menu -->
+    {% include 'menu.html.twig' %}
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 overflow-auto">
+        {% block application %}
+        {% endblock %}
+    </main>
+</div>
+
+{% endblock %}
