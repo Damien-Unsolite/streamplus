@@ -24,21 +24,25 @@
                     <div class="mb-3">
                         {{ form_label(subscriptionForm.firstname, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.firstname, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-firstname">{{ form_errors(subscriptionForm.firstname) }}</div>
                     </div>
 
                     <div class="mb-3">
                         {{ form_label(subscriptionForm.lastname, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.lastname, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-lastname">{{ form_errors(subscriptionForm.lastname) }}</div>
                     </div>
 
                     <div class="mb-3">
                         {{ form_label(subscriptionForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.email, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-email">{{ form_errors(subscriptionForm.email) }}</div>
                     </div>
 
                     <div class="mb-3">
                         {{ form_label(subscriptionForm.phoneNumber, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-phoneNumber">{{ form_errors(subscriptionForm.phoneNumber) }}</div>
                     </div>
 
                     <!-- Subscription type -->
@@ -54,6 +58,7 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        <div class="text-danger" id="subscriptionForm-subscriptionType">{{ form_errors(subscriptionForm.subscriptionType) }}</div>
                     </div>
                 </div>
 
@@ -62,34 +67,40 @@
                     <h4 class="card-title mb-4">{{ 'Address'|trans }}</h4>
 
                     <div class="mb-3">
+                        {{ form_label(subscriptionForm.address.country, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.address.country, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-country">{{ form_errors(subscriptionForm.address.country) }}</div>
+                    </div>
+
+                    <div class="mb-3">
                         {{ form_label(subscriptionForm.address.addressLine1, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.address.addressLine1, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-addressLine1">{{ form_errors(subscriptionForm.address.addressLine1) }}</div>
                     </div>
 
                     <div class="mb-3">
                         {{ form_label(subscriptionForm.address.addressLine2, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.address.addressLine2, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-addressLine2">{{ form_errors(subscriptionForm.address.addressLine2) }}</div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             {{ form_label(subscriptionForm.address.zipCode, null, {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(subscriptionForm.address.zipCode, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-zipCode">{{ form_errors(subscriptionForm.address.zipCode) }}</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             {{ form_label(subscriptionForm.address.city, null, {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(subscriptionForm.address.city, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-city">{{ form_errors(subscriptionForm.address.city) }}</div>
                         </div>
                     </div>
 
-                    <div class="mb-3">
+                    <div id="state-wrapper" class="mb-3">
                         {{ form_label(subscriptionForm.address.state, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.address.state, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_label(subscriptionForm.address.country, null, {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(subscriptionForm.address.country, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-state">{{ form_errors(subscriptionForm.address.state) }}</div>
                     </div>
                 </div>
 
@@ -100,16 +111,19 @@
                     <div class="mb-3">
                         {{ form_label(subscriptionForm.creditCardNumber, null, {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(subscriptionForm.creditCardNumber, {'attr': {'class': 'form-control'}}) }}
+                        <div class="text-danger" id="subscriptionForm-creditCardNumber">{{ form_errors(subscriptionForm.creditCardNumber) }}</div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             {{ form_label(subscriptionForm.creditCardExpirationDate, null, {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(subscriptionForm.creditCardExpirationDate, {'attr': {'class': 'form-control'}}) }}
+                            <div class="text-danger" id="subscriptionForm-creditCardExpirationDate">{{ form_errors(subscriptionForm.creditCardExpirationDate) }}</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             {{ form_label(subscriptionForm.creditCardCVV, null, {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(subscriptionForm.creditCardCVV, {'attr': {'class': 'form-control'}}) }}
+                            <div class="text-danger" id="subscriptionForm-creditCardCVV">{{ form_errors(subscriptionForm.creditCardCVV) }}</div>
                         </div>
                     </div>
                 </div>
@@ -145,7 +159,88 @@
     let step = 1;
     let showPaymentStep = true;
 
+
+    function validateStep(fieldModified = null){
+        nbErrors = 0;
+
+        let currentStep = 0;
+        // Check the visible step
+        $('.form-step').each(function () {
+            currentStep = currentStep + 1;
+
+            if ($(this).is(':visible')) {
+                
+                $(this).find('input, textarea, select').each(function () {
+                    if (!validateField($(this))) {
+                        nbErrors++;
+                    }
+
+                    // Specific fields test
+                    let errorDiv = $('#subscriptionForm-subscriptionType');
+                    if ($('input[name="user[subscriptionType]"]:checked').length == 0) {
+                        errorDiv.text('This field is mandatory');
+                        nbErrors++;
+                    } else {
+                        errorDiv.text('');
+                    }
+                });
+
+            }
+        });
+        
+        return (nbErrors == 0);
+    }
+
+    function validateField(inputField){
+        isValid = true;
+
+        // Search the field with class ".text-danger"
+        let errorDiv = inputField.closest('.mb-3').find('.text-danger');
+        
+        // If field is required and empty
+        if (inputField.prop('required') && inputField.val().trim() === '') {
+            errorDiv.text('This field is mandatory');
+            isValid = false;
+        } else {
+            errorDiv.text('');
+        }
+    
+        // Specific fields test
+        if (!isValid) {
+            //Test phone number
+            if (inputField.attr('name') == 'user[phoneNumber]') {
+                //At least 10 digits and only digits
+                if (!/^\d{10,}$/.test(inputField.val())) {
+                    errorDiv.text('The phone field must contain only digits and at least 10 digits');
+                    isValid = false;
+                } else {
+                    errorDiv.text('');
+                }
+            }
+
+            //Test email address
+            if (inputField.attr('name') == 'user[email]') {
+                // Validate email format
+                let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(inputField.val())) {
+                    errorDiv.text('Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    errorDiv.text('');
+                }
+            }
+        }
+
+        return isValid;
+    }
+
     function nextStep(){
+
+        // Do not change step if validation is not ok
+        if (!validateStep()) {
+            return ;
+        }
+
         step = step + 1;
 
         // We skip the payment step when the "premium" type is not selected
@@ -172,6 +267,12 @@
     }
 
     function previousStep(){
+
+        // Do not change step if validation is not ok
+        if (!validateStep()) {
+            return ;
+        }
+
         step = step - 1;
 
         // We skip the payment step when the "premium" type is not selected
@@ -196,12 +297,40 @@
         }
     }
 
+    function updateCountryField() {
+        let country = $('#user_address_country').val();
+        let stateField = $('#user_address_state');
+        let wrapperState = $('#state-wrapper');
+
+        // If USA, we show the field and make it obligatory
+        if (country === 'US') {
+            wrapperState.show();
+            stateField.prop('required', true);
+        } else {
+            // Else, we hide it
+            wrapperState.hide();
+            stateField.prop('required', false);
+        }
+    }
+
     //When document is ready
-    $(function () {
+    $(document).ready(function () {
+        // Initialization of state field
+        updateCountryField();
+
+        /* Events */
+        // Event when change country
+        $('#user_address_country').on('change', updateCountryField);
+
         // Event when user click on type of subscription
         $('input[name="user[subscriptionType]"]').on('change', function () {
             const radioValue = $(this).val();
             showPaymentStep = (radioValue === 'premium');
+        });
+
+        //Event for check validity when change a field value
+        $('input, textarea, select').on('change', function () {
+            validateField($(this));
         });
     });
 

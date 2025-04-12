@@ -41,6 +41,7 @@
 
 # Build data
 /build/
+/node_modules/
 
 # Composer PHAR
 /composer.phar

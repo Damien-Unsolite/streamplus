@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Subscription;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,26 @@ final class SubscriptionController extends AbstractController
 
         // If the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            // Need to fill address.user_id
+            $address = $user->getAddress();
+            if ($address) {
+                $address->setUser($user);
+            }
+
+            // If premium, we create a subscription occurrence
+            $subscriptionType = $form->get('subscriptionType')->getData();
+            if ($subscriptionType === 'premium') {
+                $expirationDate = new \DateTime('+1 year -1 day');
+                $subscription = new Subscription();
+                $subscription->setUser($user);
+                $subscription->setType($subscriptionType); //We could associate this field as Enum SubscriptionType
+                $subscription->setDateStart(new \DateTime());
+                $subscription->setDateEnd($expirationDate);
+                
+                $entityManager->persist($subscription);
+            }
+
             // Save the user and related entities
             $entityManager->persist($user);
             $entityManager->flush();
@@ -41,7 +62,7 @@ final class SubscriptionController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'app_subscription_success')]
+    #[Route('/subscription/success', name: 'app_subscription_success')]
     public function appSubscriptionSuccess(
         Request $request,
         EntityManagerInterface $entityManager

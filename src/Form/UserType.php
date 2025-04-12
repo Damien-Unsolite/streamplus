@@ -31,7 +31,7 @@ class UserType extends AbstractType
             ])
             ->add('phoneNumber', TelType::class, [
                 'label' => 'Phone number *',
-                'required' => false,
+                'required' => true,
             ])
             ->add('creditCardNumber', TextType::class, [
                 'label' => 'Credit card number',

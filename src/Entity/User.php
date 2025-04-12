@@ -46,7 +46,6 @@ class User
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
-        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
