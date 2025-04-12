@@ -1,0 +1,18 @@
+{
+  "name": "streamplus",
+  "version": "1.0.0",
+  "description": "- Set the DATABASE_URL variable to specify your database connection information (Using MySQL)\r - Create the database\r  php bin/console doctrine:database:create\r - composer install",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@symfony/webpack-encore": "^5.1.0"
+  }
+}

@@ -5,3 +5,7 @@
 - Create the database
  php bin/console doctrine:database:create
 - composer install
+
+# Start the project
+- npm run build
+- symfony server:start
