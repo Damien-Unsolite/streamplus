@@ -37,10 +37,15 @@ class UserType extends AbstractType
                 'label' => 'Credit card number',
                 'required' => false,
             ])
-            ->add('creditCardExpirationDate', DateType::class, [
-                'label' => 'Expiration date',
+            ->add('creditCardExpirationDate', TextType::class, [
+                'label' => 'Expiration date (MM/YY)',
                 'required' => false,
-                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => 'MM/YY',
+                    'pattern' => '(0[1-9]|1[0-2])\/\d{2}', //Could be used if we not test from JavaScript
+                    'maxlength' => 5,
+                ],
+                'mapped' => false, // Not associated to User because of format
             ])
             ->add('creditCardCVV', TextType::class, [
                 'label' => 'CVV',

@@ -29,6 +29,11 @@ final class SubscriptionController extends AbstractController
         // If the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
             
+            // Change format string "MM/YY" to date
+            $expirationString = $form->get('creditCardExpirationDate')->getData();
+            $expirationDate = \DateTime::createFromFormat('m/y', $expirationString);
+            $user->setCreditCardExpirationDate($expirationDate);
+
             // Need to fill address.user_id
             $address = $user->getAddress();
             if ($address) {
