@@ -1,0 +1,13 @@
+.menuLogo {
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+.subscription-card input[type="radio"] {
+    transform: scale(1.3);
+}
+
+.subscription-card:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}

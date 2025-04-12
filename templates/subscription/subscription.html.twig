@@ -1,0 +1,209 @@
+{% extends 'extends/application.html.twig' %}
+
+{% block title %}{{ 'User subscription' |trans }}{% endblock %}
+
+{% block application %}
+
+<div class="container my-5 d-flex justify-content-center">
+    <div class="w-100" style="max-width: 600px;">
+
+        <!-- Page title -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">{{ 'Subscription form'|trans }}</h2>
+        </div>
+
+        {{ form_start(subscriptionForm) }}
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+
+                <!-- Step 1 : Personal Information -->
+                <div class="form-step" id="step-1">
+                    <h4 class="card-title mb-4">{{ 'Personal Information'|trans }}</h4>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.firstname, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.firstname, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.lastname, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.lastname, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.email, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.phoneNumber, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <!-- Subscription type -->
+                    <div class="mb-3">
+                        <label class="form-label d-block">{{ 'Subscription type'|trans }}</label>
+                        <div class="row">
+                            {% for choice in subscriptionForm.subscriptionType %}
+                                <div class="col-md-6">
+                                    <label class="card p-3 h-100 shadow-sm subscription-card d-flex align-items-center gap-2">
+                                        {{ form_widget(choice, { attr: {'class': 'form-check-input'} }) }}
+                                        <span class="h5 mb-0">{{ choice.vars.label|trans }}</span>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 : Address -->
+                <div class="form-step d-none" id="step-2">
+                    <h4 class="card-title mb-4">{{ 'Address'|trans }}</h4>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.address.addressLine1, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.address.addressLine1, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.address.addressLine2, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.address.addressLine2, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(subscriptionForm.address.zipCode, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(subscriptionForm.address.zipCode, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(subscriptionForm.address.city, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(subscriptionForm.address.city, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.address.state, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.address.state, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.address.country, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.address.country, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <!-- Step 3 : Payment Information -->
+                <div class="form-step d-none" id="step-3">
+                    <h4 class="card-title mb-4">{{ 'Payment Information'|trans }}</h4>
+
+                    <div class="mb-3">
+                        {{ form_label(subscriptionForm.creditCardNumber, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(subscriptionForm.creditCardNumber, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(subscriptionForm.creditCardExpirationDate, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(subscriptionForm.creditCardExpirationDate, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(subscriptionForm.creditCardCVV, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(subscriptionForm.creditCardCVV, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 : Summary -->
+                <div class="form-step d-none" id="step-4">
+                    <h4 class="card-title mb-4">{{ 'Summary'|trans }}</h4>
+                    <p class="text-muted">{{ 'Please review your information before confirming your subscription.'|trans }}</p>
+                    {# Summary rendering placeholder #}
+                </div>
+
+                <!-- Navigation buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-secondary" id="prev-step" onclick="previousStep()" disabled="true">{{ 'Previous'|trans }}</button>
+                    <button type="button" class="btn btn-primary" id="next-step" onclick="nextStep()">{{ 'Next'|trans }}</button>
+                    <button type="submit" class="btn btn-success d-none" id="submit-form">{{ 'Submit'|trans }}</button>
+                </div>
+
+            </div>
+        </div>
+
+        {{ form_end(subscriptionForm) }}
+
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+<script>
+    const lastStep = 4;
+    const paymentStep = 3;
+    let step = 1;
+    let showPaymentStep = true;
+
+    function nextStep(){
+        step = step + 1;
+
+        // We skip the payment step when the "premium" type is not selected
+        if (step == paymentStep) {
+            if (!showPaymentStep) {
+                step = step + 1;
+            }
+        }
+
+        // Show the choosen step
+        $('.form-step').addClass('d-none');
+        $('#step-' + step).removeClass('d-none');
+
+        // Button handling
+        if (step == lastStep){
+            $('#next-step').addClass('d-none');
+            $('#submit-form').removeClass('d-none');
+        } else {
+            $('#next-step').removeClass('d-none');
+            $('#submit-form').addClass('d-none');
+        }
+        $('#prev-step').prop('disabled', false);
+
+    }
+
+    function previousStep(){
+        step = step - 1;
+
+        // We skip the payment step when the "premium" type is not selected
+        if (step == paymentStep) {
+            if (!showPaymentStep) {
+                step = step - 1;
+            }
+        }
+
+        // Show the choosen step
+        $('.form-step').addClass('d-none');
+        $('#step-' + step).removeClass('d-none');
+
+        // Button handling
+        if (step == 1){
+            $('#prev-step').prop('disabled', true);
+            $('#next-step').removeClass('d-none');
+            $('#submit-form').addClass('d-none');
+        } else {
+            $('#next-step').addClass('d-none');
+            $('#submit-form').removeClass('d-none');
+        }
+    }
+
+    //When document is ready
+    $(function () {
+        // Event when user click on type of subscription
+        $('input[name="user[subscriptionType]"]').on('change', function () {
+            const radioValue = $(this).val();
+            showPaymentStep = (radioValue === 'premium');
+        });
+    });
+
+</script>
+{% endblock %}
